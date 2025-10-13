@@ -24,10 +24,6 @@
       "rev": "1ee5c1f",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
-    "guess-indent.nvim": {
-      "rev": "84a4987",
-      "src": "https://github.com/NMAC427/guess-indent.nvim"
-    },
     "lazydev.nvim": {
       "rev": "e28ce52",
       "src": "https://github.com/folke/lazydev.nvim"

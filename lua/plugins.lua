@@ -4,7 +4,6 @@ local plugin_files = {
 	"plugins.treesitter.nvimtreesittercontext",
 	-- Utils (mini.ai, .statusline, .surround, .icons)
 	"plugins.mininvim",
-	"plugins.guessindent",
 	"plugins.fzflua",
 	"plugins.todocomments",
 	"plugins.whichkey",
