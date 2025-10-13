@@ -1,12 +1,24 @@
 local plugin_files = {
 	"plugins.plenary",
 	"plugins.nvimtreesitter",
+	-- Utils (mini.ai, .statusline, .surround, .icons)
 	"plugins.mininvim",
 	"plugins.guessindent",
+	-- TODO: Add mappings for FZF
 	"plugins.fzflua",
-	"plugins.gitsigns",
 	"plugins.todocomments",
 	"plugins.whichkey",
+	-- TODO: LSPs
+	"plugins.lazydev",
+	"plugins.mason",
+	"plugins.blink",
+	"plugins.lspconfig",
+	"plugins.masonlspconfig",
+	"plugins.autoformatter",
+	-- Git
+	"plugins.gitsigns",
+	"plugins.diffview",
+	"plugins.neogit",
 }
 
 local plugins = {}
