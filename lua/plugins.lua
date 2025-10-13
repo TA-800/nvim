@@ -15,6 +15,12 @@ local plugin_files = {
 	"plugins.lsp.lspconfig",
 	"plugins.lsp.autoformatter",
 	"plugins.lsp.fidget",
+	-- DAP
+	"plugins.dap.nvimdap",
+	"plugins.dap.nvimnio",
+	"plugins.dap.nvimdapview",
+	"plugins.dap.nvimdapvirtualtext",
+	"plugins.dap.nvimdappython",
 	-- Git
 	"plugins.gitsigns",
 	"plugins.diffview",
