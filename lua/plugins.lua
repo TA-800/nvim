@@ -1,6 +1,7 @@
 local plugin_files = {
 	"plugins.plenary",
-	"plugins.nvimtreesitter",
+	"plugins.treesitter.nvimtreesitter",
+	"plugins.treesitter.nvimtreesittercontext",
 	-- Utils (mini.ai, .statusline, .surround, .icons)
 	"plugins.mininvim",
 	"plugins.guessindent",
@@ -40,3 +41,10 @@ for _, installed in ipairs(vim.pack.get()) do
 		vim.pack.del({ installed.spec.name })
 	end
 end
+
+-- List installed packages
+vim.api.nvim_create_user_command("VimPackInstalled", function()
+	for i, installed in ipairs(vim.pack.get()) do
+		print(string.format("%s %s", i, installed.spec.name))
+	end
+end, { desc = "List installed packages" })
