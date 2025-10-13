@@ -1,3 +1,4 @@
+require("colorscheme")
 require("options")
 require("mappings")
 require("autocmds")

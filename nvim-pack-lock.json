@@ -44,6 +44,10 @@
       "rev": "90dcfa7b",
       "src": "https://github.com/NeogitOrg/neogit"
     },
+    "nvim": {
+      "rev": "af58927",
+      "src": "https://github.com/catppuccin/nvim"
+    },
     "nvim-lspconfig": {
       "rev": "ac98db2",
       "src": "https://github.com/neovim/nvim-lspconfig"
