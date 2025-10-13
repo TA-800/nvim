@@ -1,5 +1,5 @@
 return {
-	url = "https://github.com/stevearc/conform.nvim",
+	plugin = { src = "https://github.com/stevearc/conform.nvim" },
 	config = function()
 		require("conform").setup({
 			notify_on_error = false,

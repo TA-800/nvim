@@ -1,5 +1,5 @@
 return {
-	url = "https://github.com/Saghen/blink.cmp",
+	plugin = { src = "https://github.com/Saghen/blink.cmp" },
 	config = function()
 		require("blink.cmp").setup({
 			keymap = {

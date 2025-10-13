@@ -1,3 +1,3 @@
 return {
-	url = "https://github.com/NeogitOrg/neogit"
+	plugin = { src = "https://github.com/NeogitOrg/neogit" },
 }

@@ -1,3 +1,3 @@
 return {
-	url = "https://github.com/sindrets/diffview.nvim"
+	plugin = { src = "https://github.com/sindrets/diffview.nvim" },
 }

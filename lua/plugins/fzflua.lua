@@ -1,5 +1,5 @@
 return {
-	url = "https://github.com/ibhagwan/fzf-lua",
+	plugin = { src = "https://github.com/ibhagwan/fzf-lua" },
 	config = function()
 		local fzf = require("fzf-lua")
 		fzf.setup({

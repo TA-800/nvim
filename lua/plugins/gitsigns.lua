@@ -1,3 +1,3 @@
 return {
-	url = "https://github.com/lewis6991/gitsigns.nvim"
+	plugin = { src = "https://github.com/lewis6991/gitsigns.nvim" },
 }

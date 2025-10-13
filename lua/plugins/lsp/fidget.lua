@@ -1,5 +1,5 @@
 return {
-	url = "https://github.com/j-hui/fidget.nvim",
+	plugin = { src = "https://github.com/j-hui/fidget.nvim" },
 	config = function()
 		require("fidget").setup({})
 	end,

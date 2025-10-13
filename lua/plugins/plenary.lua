@@ -1,3 +1,3 @@
 return {
-	url = "https://github.com/nvim-lua/plenary.nvim",
+	plugin = { src = "https://github.com/nvim-lua/plenary.nvim" },
 }
