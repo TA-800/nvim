@@ -12,6 +12,10 @@
       "rev": "4516612",
       "src": "https://github.com/sindrets/diffview.nvim"
     },
+    "fidget.nvim": {
+      "rev": "3f54759",
+      "src": "https://github.com/j-hui/fidget.nvim"
+    },
     "fzf-lua": {
       "rev": "db3ccff",
       "src": "https://github.com/ibhagwan/fzf-lua"
@@ -27,10 +31,6 @@
     "lazydev.nvim": {
       "rev": "e28ce52",
       "src": "https://github.com/folke/lazydev.nvim"
-    },
-    "mason-lspconfig.nvim": {
-      "rev": "6bdb14f",
-      "src": "https://github.com/mason-org/mason-lspconfig.nvim"
     },
     "mason.nvim": {
       "rev": "ad7146a",

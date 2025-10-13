@@ -109,5 +109,21 @@ return {
 			} or {},
 			virtual_text = false,
 		})
+
+		-- Install the LSPs through Mason
+		-- Enable it here by typing out the name of the LSP.
+		-- WARN: Match these names: https://github.com/neovim/nvim-lspconfig/tree/master/lua/lspconfig/configs
+		-- E.g. Mason has lua-language-server but name here should be lua_ls
+		vim.lsp.enable({
+			-- LSPs
+			"lua_ls",
+			"basedpyright",
+
+			-- Linters
+			"ruff",
+
+			-- Formatters
+			"stylua",
+		})
 	end,
 }

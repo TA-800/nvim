@@ -4,17 +4,16 @@ local plugin_files = {
 	-- Utils (mini.ai, .statusline, .surround, .icons)
 	"plugins.mininvim",
 	"plugins.guessindent",
-	-- TODO: Add mappings for FZF
 	"plugins.fzflua",
 	"plugins.todocomments",
 	"plugins.whichkey",
-	-- TODO: LSPs
+	-- LSPs
 	"plugins.lazydev",
 	"plugins.mason",
 	"plugins.blink",
 	"plugins.lspconfig",
-	"plugins.masonlspconfig",
 	"plugins.autoformatter",
+	"plugins.fidget",
 	-- Git
 	"plugins.gitsigns",
 	"plugins.diffview",

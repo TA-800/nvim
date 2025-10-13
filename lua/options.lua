@@ -7,7 +7,9 @@ vim.o.relativenumber = true
 vim.o.mouse = "a"
 vim.o.showmode = false
 -- Schedule the setting after UiEnter because it can increase startup-time.
-vim.schedule(function() vim.o.clipboard = "unnamedplus" end)
+vim.schedule(function()
+	vim.o.clipboard = "unnamedplus"
+end)
 vim.o.breakindent = true
 vim.o.undofile = true
 vim.o.ignorecase = true
@@ -22,13 +24,13 @@ vim.o.splitbelow = true
 vim.o.list = true
 -- vim.opt is very similar to `vim.o` but offers an interface for conveniently interacting with tables.
 vim.o.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 -- NOTE: Neovide bug with 'split': https://github.com/neovim/neovim/issues/24802
-vim.o.inccommand = 'nosplit'
+vim.o.inccommand = "nosplit"
 vim.o.cursorline = true
 vim.o.scrolloff = 10
-vim.o.winborder = 'solid'
-vim.o.foldmethod = 'expr'
+vim.o.winborder = "solid"
+vim.o.foldmethod = "expr"
 vim.o.foldexpr = vim.treesitter.foldexpr()
 vim.o.foldlevelstart = 99
 -- if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
