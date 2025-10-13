@@ -107,7 +107,6 @@ return {
 					[vim.diagnostic.severity.HINT] = "󰌶 ",
 				},
 			} or {},
-			virtual_text = false,
 		})
 	end,
 }
