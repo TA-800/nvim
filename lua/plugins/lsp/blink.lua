@@ -7,6 +7,11 @@ return {
 				["<C-d>"] = { "scroll_documentation_down", "fallback" },
 				["<C-u>"] = { "scroll_documentation_up", "fallback" },
 			},
+			cmdline = {
+				keymap = {
+					preset = "inherit",
+				},
+			},
 			appearance = {
 				-- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
 				-- Adjusts spacing to ensure icons are aligned
