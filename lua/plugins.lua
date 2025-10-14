@@ -7,6 +7,8 @@ local plugin_files = {
 	"plugins.fzflua",
 	"plugins.todocomments",
 	"plugins.whichkey",
+	"plugins.cord",
+	"plugins.copilotchat",
 	-- LSPs
 	"plugins.lsp.lazydev",
 	"plugins.lsp.mason",

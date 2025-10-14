@@ -7,6 +7,4 @@ vim.lsp.enable({
 	"clangd",
 	-- DAP
 	"debugpy",
-	-- Formatter
-	"stylua",
 })

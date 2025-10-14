@@ -3,7 +3,6 @@ return {
 	config = function()
 		local fzf = require("fzf-lua")
 		fzf.setup({
-			"telescope",
 			files = {
 				formatter = "path.filename_first",
 			},

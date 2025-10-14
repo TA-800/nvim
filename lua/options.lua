@@ -27,7 +27,6 @@ vim.o.signcolumn     = 'yes'      -- Always show signcolumn (less flicker)
 vim.o.splitbelow     = true       -- Horizontal splits will be below
 vim.o.splitright     = true       -- Vertical splits will be to the right
 vim.o.winborder      = 'solid'    -- Use border in floating windows
-vim.o.wrap           = false      -- Don't visually wrap lines (toggle with \w)
 
 -- Editing ====================================================================
 vim.o.autoindent    = true        -- Use auto indent
@@ -43,5 +42,5 @@ vim.o.smartindent   = true        -- Make indenting smart
 vim.o.foldmethod    = "expr"
 vim.o.foldexpr      = vim.treesitter.foldexpr()
 vim.o.foldlevelstart = 99
-vim.o.confirm       = true        -- Confirm an operation that would fail due to unasved changes (like :q)
+vim.o.confirm       = true        -- Confirm an operation that would fail due to unsaved changes (like :q)
 -- stylua: ignore end

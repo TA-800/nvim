@@ -1,12 +1,20 @@
 {
   "plugins": {
+    "CopilotChat.nvim": {
+      "rev": "f68deee",
+      "src": "https://github.com/CopilotC-Nvim/CopilotChat.nvim"
+    },
     "blink.cmp": {
-      "rev": "ddeab4c",
+      "rev": "5037cfa",
       "src": "https://github.com/Saghen/blink.cmp"
     },
     "conform.nvim": {
       "rev": "fbcb4fa",
       "src": "https://github.com/stevearc/conform.nvim"
+    },
+    "cord.nvim": {
+      "rev": "1aadec4",
+      "src": "https://github.com/vyfor/cord.nvim"
     },
     "diffview.nvim": {
       "rev": "4516612",
@@ -17,7 +25,7 @@
       "src": "https://github.com/j-hui/fidget.nvim"
     },
     "fzf-lua": {
-      "rev": "db3ccff",
+      "rev": "58ebb27",
       "src": "https://github.com/ibhagwan/fzf-lua"
     },
     "gitsigns.nvim": {
@@ -33,11 +41,11 @@
       "src": "https://github.com/mason-org/mason.nvim"
     },
     "mini.nvim": {
-      "rev": "5e1dd6e",
+      "rev": "6a224dd",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
     "neogit": {
-      "rev": "90dcfa7b",
+      "rev": "0f48491a",
       "src": "https://github.com/NeogitOrg/neogit"
     },
     "nvim": {
@@ -69,9 +77,9 @@
       "src": "https://github.com/nvim-neotest/nvim-nio"
     },
     "nvim-treesitter": {
-      "rev": "42fc28ba",
+      "rev": "0606c7a9",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
-      "version": "'master'"
+      "version": "'main'"
     },
     "nvim-treesitter-context": {
       "rev": "41847d3",
