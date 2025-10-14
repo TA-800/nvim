@@ -8,6 +8,7 @@ local plugin_files = {
 	"plugins.todocomments",
 	"plugins.whichkey",
 	"plugins.cord",
+	"plugins.rendermarkdown",
 	-- AI
 	"plugins.copilotchat",
 	-- LSPs
