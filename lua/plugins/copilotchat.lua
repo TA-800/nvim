@@ -21,6 +21,10 @@ return {
 					callback = copilot.close,
 				},
 			},
+			-- https://github.com/CopilotC-Nvim/CopilotChat.nvim/wiki/Examples-and-Tips#markdown-rendering
+			highlight_headers = false,
+			separator = "---",
+			error_header = "> [!ERROR] Error",
 		})
 		-- Auto-command to customize chat buffer behavior
 		vim.api.nvim_create_autocmd("BufEnter", {
