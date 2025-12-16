@@ -5,6 +5,7 @@ local plugin_files = {
 	-- Utils (mini.ai, .statusline, .surround, .icons)
 	"plugins.mininvim",
 	"plugins.fzflua",
+	"plugins.undotree",
 	"plugins.todocomments",
 	"plugins.whichkey",
 	"plugins.cord",
