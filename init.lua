@@ -45,16 +45,6 @@ vim.o.foldexpr       = vim.treesitter.foldexpr()
 vim.o.foldlevelstart = 99
 vim.o.confirm        = true -- Confirm an operation that would fail due to unsaved changes (like :q)
 
--- Before :w writes to file, check if current buffer has an LSP attached to it with formatting support, then format
-vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-  callback = function()
-    local clients = vim.lsp.get_clients({ bufnr = 0, method = "textDocument/formatting" })
-    if #clients > 0 then
-      vim.lsp.buf.format()
-    end
-  end
-})
-
 vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function()
     vim.hl.on_yank()
