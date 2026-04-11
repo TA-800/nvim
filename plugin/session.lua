@@ -42,7 +42,7 @@ local Load = function()
     {
       prompt = "Select session: ",
       format_item = function(item)
-        return string.gsub(item, "%%", "/")
+        return string.sub(string.gsub(item, "%%", "/"), 1, -5)
       end,
     },
     function(choice)
