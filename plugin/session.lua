@@ -42,6 +42,7 @@ local Load = function()
     {
       prompt = "Select session: ",
       format_item = function(item)
+        -- Convert %% to / just for viewing, and also remove ".vim"
         return string.sub(string.gsub(item, "%%", "/"), 1, -5)
       end,
     },
