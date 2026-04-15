@@ -10,7 +10,6 @@ vim.api.nvim_create_autocmd('BufEnter', {
     -- vim.keymap.set('i', '<c-space>', vim.lsp.completion.get, desc = { ... })
 
 
-    vim.cmd [[set completeopt+=menuone,noselect,popup]]
     vim.api.nvim_create_autocmd('LspAttach', {
       callback = function(ev)
         -- :h lsp-attach
@@ -18,6 +17,10 @@ vim.api.nvim_create_autocmd('BufEnter', {
         local client = vim.lsp.get_client_by_id(ev.data.client_id)
         if client:supports_method("textDocument/completion") then
           vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
+        end
+
+        if client:supports_method("textDocument/codeLens") then
+          vim.lsp.codelens.enable(true, { bufnr = 0, client.id })
         end
 
         -- Auto-format ("lint") on save.

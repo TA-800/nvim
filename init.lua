@@ -45,6 +45,8 @@ vim.o.foldexpr       = vim.treesitter.foldexpr()
 vim.o.foldlevelstart = 99
 vim.o.confirm        = true -- Confirm an operation that would fail due to unsaved changes (like :q)
 
+vim.o.completeopt    = "menu,menuone,popup,noselect,fuzzy"
+
 vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function()
     vim.hl.on_yank()
