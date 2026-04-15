@@ -88,12 +88,12 @@ local function SelectSession()
           return string.sub(string.gsub(item, "%%", "/"), 1, -5)
         end,
       }, function(choice)
-        -- Resume returns parameters passed
+        -- When choice is made, resume coroutine, pass selected choice as param to coroutine
         coroutine.resume(selectCo, choice)
       end)
 
-    -- Yield will pause coroutine execution
-    -- The callback from vim.ui.select will resume the coroutine and passed params to .resume() will be return values
+    -- Return control to caller (have to wait until coroutine is resumed)
+    -- Choice will be populated with values passed as param(s) when .resume() is called next time on this coroutine
     local choice = coroutine.yield()
 
     if choice ~= nil then
