@@ -77,21 +77,31 @@ local function SelectSession()
   -- 3. On Load, load session. On Delete, delete session and open session selection again.
   -- 1.5. Cancel session selection if user cancels/aborts dialog (choice == null).
   local items = vim.fn.readdir(SESSION_DIR)
-  vim.ui.select(items,
-    {
-      -- TODO: If Load/Delete implemented then prompt = "Select session (cancel to escape): "
-      prompt = "Select session: ",
-      format_item = function(item)
-        -- Convert %% to / just for viewing, and also remove ".vim"
-        return string.sub(string.gsub(item, "%%", "/"), 1, -5)
-      end,
-    },
-    function(choice)
-      if choice == nil then
-        return
-      end
+  local selectCo
+  selectCo = coroutine.create(function()
+    vim.ui.select(items,
+      {
+        -- TODO: If Load/Delete implemented then prompt = "Select session (cancel to escape): "
+        prompt = "Select session: ",
+        format_item = function(item)
+          -- Convert %% to / just for viewing, and also remove ".vim"
+          return string.sub(string.gsub(item, "%%", "/"), 1, -5)
+        end,
+      }, function(choice)
+        -- Resume returns parameters passed
+        coroutine.resume(selectCo, choice)
+      end)
+
+    -- Yield will pause coroutine execution
+    -- The callback from vim.ui.select will resume the coroutine and passed params to .resume() will be return values
+    local choice = coroutine.yield()
+
+    if choice ~= nil then
       LoadSession(choice)
-    end)
+    end
+  end)
+
+  coroutine.resume(selectCo)
 end
 
 vim.api.nvim_create_user_command("Sessions",
