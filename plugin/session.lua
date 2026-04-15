@@ -70,51 +70,43 @@ local function LoadSession(choice)
   print("Session loaded.")
 end
 
-local function SelectSessionCo(items, orchestratorCo)
-  print("Running SelectSessionCo")
+local function SelectSessionCo(handlingCo, items)
   vim.ui.select(items, { prompt = "Select session: " },
     function(selectedSession)
-      print("coroutine.resume(orchestratorCo, session) inside SelectSessionCo vim.ui callback")
-      coroutine.resume(orchestratorCo, selectedSession)
+      coroutine.resume(handlingCo, selectedSession)
     end)
 end
 
-local function ActionSessionCo(selectedSession, orchestratorCo)
-  print("Running ActionSessionCo with " .. selectedSession)
+local function ActionSessionCo(handlingCo)
   vim.ui.select({ "Load", "Delete" }, { prompt = "Select action: " }, function(selectedAction)
-    print("coroutine.resume(orchestratorCo, selectedAction)")
-    coroutine.resume(orchestratorCo, selectedAction)
+    coroutine.resume(handlingCo, selectedAction)
   end)
 end
 
-local function OrchestratorCo()
-  print("Running OrchestratorCo")
-  local selectSessionCo = coroutine.create(SelectSessionCo)
-  local ok, ret = coroutine.resume(selectSessionCo, vim.fn.readdir(SESSION_DIR), coroutine.running())
-  print("OrchestratorCo: Returning from SelectSessionCo")
-  if not ok then error("OrchestratorCo: SelectSessionCo error") end
-  local selectedSession
-  if not ret then
-    -- First yield becuase first yield from select session co will return nothing
-    -- Then coroutine.resume(orchestratorCo, selectedSession) from select callback will resume here
-    print("OrchestratorCo: Yielding control to main thread, waiting for selectedSession")
-    selectedSession = coroutine.yield()
-    print("OrchestratorCo: Resuming with selectedSession " .. selectedSession)
+local function await(f, ...)
+  local self = coroutine.running()
+  assert(self, "await can be only called inside a coroutine")
+  local co = coroutine.create(f)
+  local ok, ret = coroutine.resume(co, self, ...)
+  if not ok then
+    error("Coroutine returned error")
   end
-
-  local actionSessionCo = coroutine.create(ActionSessionCo)
-  ok, ret = coroutine.resume(actionSessionCo, selectedSession, coroutine.running())
-  print("OrchestratorCo: Returning from ActionSessionCo")
-  if not ok then error("OrchestratorCo: ActionSessionCo error") end
-  local selectedAction
+  local result
   if not ret then
-    print("OrchestratorCo: Yielding control to main thread, waiting for selectedAction")
-    selectedAction = coroutine.yield()
-    print("OrchestratorCo: Resuming with selectedAction " .. selectedAction)
+    result = coroutine.yield()
   end
-
+  return result
+end
+local function ListCo()
+  local selectedSession = await(SelectSessionCo, vim.fn.readdir(SESSION_DIR))
   print("Selected session: " .. selectedSession)
+
+  -- TODO: if selectedSession nil then return
+
+  local selectedAction = await(ActionSessionCo)
   print("Selected action: " .. selectedAction)
+
+  -- TODO: if selectedAction = delete or nil, loop
 end
 
 vim.api.nvim_create_user_command("Sessions",
@@ -122,7 +114,7 @@ vim.api.nvim_create_user_command("Sessions",
     if opts.fargs[1] == "make" then
       CreateSession()
     else
-      coroutine.wrap(OrchestratorCo)()
+      coroutine.wrap(ListCo)()
     end
   end, {
     nargs = "?"
