@@ -51,6 +51,7 @@ end
 
 local function LoadSession(choice)
   SaveSessionIfExists()
+  -- TODO: Need to close LSPs as well?
 
   -- Close existing buffers
   local buffers = vim.api.nvim_list_bufs()
@@ -69,39 +70,51 @@ local function LoadSession(choice)
   print("Session loaded.")
 end
 
-local function SelectSession()
-  -- TODO: Add Load or Delete action on choosing session, but don't introduce inconveniences like having to execute :Sessions again to open up the session selection menu.
-  -- TODO: Use coroutines for readable code: https://www.reddit.com/r/neovim/comments/1sjoshj/asyncawait_like_behavior_with_lua_coroutines/
-  -- 1. Open session selection with vim.ui.select.
-  -- 2. On session selection, open action selection (Load or Delete) with vim.ui.select.
-  -- 3. On Load, load session. On Delete, delete session and open session selection again.
-  -- 1.5. Cancel session selection if user cancels/aborts dialog (choice == null).
-  local items = vim.fn.readdir(SESSION_DIR)
-  local selectCo
-  selectCo = coroutine.create(function()
-    vim.ui.select(items,
-      {
-        -- TODO: If Load/Delete implemented then prompt = "Select session (cancel to escape): "
-        prompt = "Select session: ",
-        format_item = function(item)
-          -- Convert %% to / just for viewing, and also remove ".vim"
-          return string.sub(string.gsub(item, "%%", "/"), 1, -5)
-        end,
-      }, function(choice)
-        -- When choice is made, resume coroutine, pass selected choice as param to coroutine
-        coroutine.resume(selectCo, choice)
-      end)
+local function SelectSessionCo(items, orchestratorCo)
+  print("Running SelectSessionCo")
+  vim.ui.select(items, { prompt = "Select session: " },
+    function(selectedSession)
+      print("coroutine.resume(orchestratorCo, session) inside SelectSessionCo vim.ui callback")
+      coroutine.resume(orchestratorCo, selectedSession)
+    end)
+end
 
-    -- Return control to caller (have to wait until coroutine is resumed)
-    -- Choice will be populated with values passed as param(s) when .resume() is called next time on this coroutine
-    local choice = coroutine.yield()
-
-    if choice ~= nil then
-      LoadSession(choice)
-    end
+local function ActionSessionCo(selectedSession, orchestratorCo)
+  print("Running ActionSessionCo with " .. selectedSession)
+  vim.ui.select({ "Load", "Delete" }, { prompt = "Select action: " }, function(selectedAction)
+    print("coroutine.resume(orchestratorCo, selectedAction)")
+    coroutine.resume(orchestratorCo, selectedAction)
   end)
+end
 
-  coroutine.resume(selectCo)
+local function OrchestratorCo()
+  print("Running OrchestratorCo")
+  local selectSessionCo = coroutine.create(SelectSessionCo)
+  local ok, ret = coroutine.resume(selectSessionCo, vim.fn.readdir(SESSION_DIR), coroutine.running())
+  print("OrchestratorCo: Returning from SelectSessionCo")
+  if not ok then error("OrchestratorCo: SelectSessionCo error") end
+  local selectedSession
+  if not ret then
+    -- First yield becuase first yield from select session co will return nothing
+    -- Then coroutine.resume(orchestratorCo, selectedSession) from select callback will resume here
+    print("OrchestratorCo: Yielding control to main thread, waiting for selectedSession")
+    selectedSession = coroutine.yield()
+    print("OrchestratorCo: Resuming with selectedSession " .. selectedSession)
+  end
+
+  local actionSessionCo = coroutine.create(ActionSessionCo)
+  ok, ret = coroutine.resume(actionSessionCo, selectedSession, coroutine.running())
+  print("OrchestratorCo: Returning from ActionSessionCo")
+  if not ok then error("OrchestratorCo: ActionSessionCo error") end
+  local selectedAction
+  if not ret then
+    print("OrchestratorCo: Yielding control to main thread, waiting for selectedAction")
+    selectedAction = coroutine.yield()
+    print("OrchestratorCo: Resuming with selectedAction " .. selectedAction)
+  end
+
+  print("Selected session: " .. selectedSession)
+  print("Selected action: " .. selectedAction)
 end
 
 vim.api.nvim_create_user_command("Sessions",
@@ -109,7 +122,7 @@ vim.api.nvim_create_user_command("Sessions",
     if opts.fargs[1] == "make" then
       CreateSession()
     else
-      SelectSession()
+      coroutine.wrap(OrchestratorCo)()
     end
   end, {
     nargs = "?"
