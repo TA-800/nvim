@@ -1,30 +1,29 @@
--- TODO: cache sessionDir
+local SESSION_DIR = vim.fs.normalize(vim.fn.stdpath("data")) .. "/sessions/"
+-- If this file is "require"d then ensure /sessions/ dir exists.
+vim.fn.mkdir(SESSION_DIR, "p")
 
----Get session-related details
+---Get name of .vim file that would save current session
 ---@return string sessionName The filename that represents the session .vim for current working directory. Separators are replaced with "%" similar to in-built undotree files.
----@return string sessionDir The directory where sessions are saved using stdpath("data") + /sessions/.
-function GetSessionDetails()
-  local cwd = vim.fn.getcwd()
-  -- https://www.lua.org/pil/20.2.html, %w = alphanumeric chars, %W = complement of %W, % = escape char in Lua so %% = %
-  local sessionName = string.gsub(cwd, "[%W]", "%%") .. ".vim"
-  local sessionDir = vim.fs.normalize(vim.fn.stdpath("data")) .. "/sessions/"
-  return sessionName, sessionDir
+local function GetNameForCurrentSession()
+  local cwd = vim.fs.normalize(vim.fn.getcwd())
+  local sessionName = string.gsub(cwd, "[/:]", "%%") .. ".vim"
+  return sessionName
 end
 
-function SessionExists(sessionName, sessionDir)
-  local existing = vim.fs.find(sessionName, { limit = 1, type = 'file', path = sessionDir })
+local function SessionExists(sessionName)
+  local existing = vim.fs.find(sessionName, { limit = 1, type = 'file', path = SESSION_DIR })
 
   return #existing > 0
 end
 
 ---If this current directory exists as a session then save it.
-function SaveSessionIfExists()
-  local sessionName, sessionDir = GetSessionDetails()
-  if not SessionExists(sessionName, sessionDir) then
+local function SaveSessionIfExists()
+  local sessionName = GetNameForCurrentSession()
+  if not SessionExists(sessionName) then
     return
   end
 
-  local session = sessionDir .. sessionName
+  local session = SESSION_DIR .. sessionName
   vim.api.nvim_cmd({
     cmd = "mksession",
     args = { session },
@@ -34,16 +33,14 @@ function SaveSessionIfExists()
   print("Session saved.")
 end
 
-function Make()
-  local sessionName, sessionDir = GetSessionDetails()
-  -- Create session directory, p for silently exit if exists
-  vim.fn.mkdir(sessionDir, "p")
-  if SessionExists(sessionName, sessionDir) then
+local function CreateSession()
+  local sessionName = GetNameForCurrentSession()
+  if SessionExists(sessionName) then
     print("Existing session detected. Session will be auto-saved on exit.")
     return
   end
 
-  local session = sessionDir .. sessionName
+  local session = SESSION_DIR .. sessionName
   vim.api.nvim_cmd({
     cmd = "mksession",
     args = { session },
@@ -52,7 +49,7 @@ function Make()
   print("Session created.")
 end
 
-function LoadSession(sessionDir, choice)
+local function LoadSession(choice)
   SaveSessionIfExists()
 
   -- Close existing buffers
@@ -66,21 +63,20 @@ function LoadSession(sessionDir, choice)
   -- Load selected session
   vim.api.nvim_cmd({
     cmd = "source",
-    args = { sessionDir .. choice },
+    args = { SESSION_DIR .. choice },
     magic = { file = false, bar = false }
   }, {})
   print("Session loaded.")
 end
 
-function SelectSession()
+local function SelectSession()
   -- TODO: Add Load or Delete action on choosing session, but don't introduce inconveniences like having to execute :Sessions again to open up the session selection menu.
   -- TODO: Use coroutines for readable code: https://www.reddit.com/r/neovim/comments/1sjoshj/asyncawait_like_behavior_with_lua_coroutines/
   -- 1. Open session selection with vim.ui.select.
   -- 2. On session selection, open action selection (Load or Delete) with vim.ui.select.
   -- 3. On Load, load session. On Delete, delete session and open session selection again.
   -- 1.5. Cancel session selection if user cancels/aborts dialog (choice == null).
-  local _, sessionDir = GetSessionDetails()
-  local items = vim.fn.readdir(sessionDir)
+  local items = vim.fn.readdir(SESSION_DIR)
   vim.ui.select(items,
     {
       -- TODO: If Load/Delete implemented then prompt = "Select session (cancel to escape): "
@@ -94,20 +90,14 @@ function SelectSession()
       if choice == nil then
         return
       end
-      -- TODO: Wrap in a Load() function
-      -- Also add command to close all current buffers in 1st session before loading a new 2nd one
-      -- because buffers opened in 1st before switching to 2nd remain,
-      -- then get saved into that switched 2nd session's session.vim,
-      -- then get opened up every time when 2nd session is loaded.
-      -- Maybe before Load, save current session then close buffers then load new session.
-      LoadSession(sessionDir, choice)
+      LoadSession(choice)
     end)
 end
 
 vim.api.nvim_create_user_command("Sessions",
   function(opts)
     if opts.fargs[1] == "make" then
-      Make()
+      CreateSession()
     else
       SelectSession()
     end
