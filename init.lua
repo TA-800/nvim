@@ -1,3 +1,4 @@
+-- Get lua_ls to recognize the Neovim stdlib with .luarc.json: https://lsp-zero.netlify.app/docs/getting-started > Expand: Neovim and lua_ls
 -- General ====================================================================
 vim.g.mapleader      = " " -- Use `<Space>` as <Leader> key
 vim.g.maplocalleader = " "
